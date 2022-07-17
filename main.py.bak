@@ -155,7 +155,7 @@ class Gui:
             else:
                 img = np.array(self.im)
             #plotHist.equal(np.asarray(self.im))
-            plotHist.equal(img)
+            plotHist.equal(img, cls = self.cls)
             new_equal = Image.open('new_img_color.png')     
             #plotHist.plot(np.asarray(self.im), np.asarray(new_equal))
             plotHist.plot(img, np.asarray(new_equal), cls = self.cls)

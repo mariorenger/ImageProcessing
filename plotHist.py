@@ -28,7 +28,7 @@ def plot(image, new, cls):
         # create a histogram for the current channel and plot it
         hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
         ax[1][0].plot(hist, color=color)
-        ax[1][1].set_ylim(0, 2255)
+        #ax[1][1].set_ylim(0, 2255)
     ax[1][0].set_title('old')
     
     chans2 = cv2.split(new)
@@ -36,7 +36,7 @@ def plot(image, new, cls):
         # create a histogram for the current channel and plot it
         hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
         ax[1][1].plot(hist, color=color)
-        ax[1][1].set_ylim(0, 2255)
+        #ax[1][1].set_ylim(0, 2255)
         
     
     ax[1][1].set_title('new')
@@ -45,8 +45,15 @@ def plot(image, new, cls):
     else:
         ax[0][0].imshow(image)
     ax[0][1].imshow(new)
+    
     #plt.tight_layout()
     plt.show()
+    img2 = np.array([])
+    if cls == "HSV":
+        new = cv2.cvtColor(new, cv2.COLOR_HSV2RGB)
+    elif cls == "YCbCr":
+        new = cv2.cvtColor(new, cv2.COLOR_YCrCb2RGB)
+    cv2.imwrite('After Equal.png', new)
     
 def plot_matching(image, reference, matched):
     fig, axes = plt.subplots(nrows=4, ncols=3, figsize=(8, 8), sharex=False, sharey=False)

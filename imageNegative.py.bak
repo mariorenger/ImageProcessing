@@ -7,6 +7,7 @@ import random as rd
 S = 255
 
 def negativeImage(im, neg, cls, a):
+    
     if cls == "HSV":
         img = cv2.cvtColor(np.array(im), cv2.COLOR_RGB2HSV)
     elif cls == "YCbCr":
@@ -20,10 +21,38 @@ def negativeImage(im, neg, cls, a):
         G[:] = [S-x for x in G]     #inverting green    
         R[:] = [S-x for x in R]     #inverting red
     if a != "":
-        a=int(a)%255
-        B[:] = [x+a for x in B]     
-        G[:] = [x+a for x in G]        
-        R[:] = [x+a for x in R]
+        a=int(a)
+        print(a)
+        for x in range(B.shape[0]):
+            for y in range(B.shape[1]):
+                if B[x][y]+a>255:
+                    B[x][y] = 255
+                elif B[x][y]+a <1:
+                    B[x][y] = 1
+                else:
+                    B[x][y] = B[x][y] +a 
+        for x in range(G.shape[0]):
+            for y in range(G.shape[1]):
+                if G[x][y]+a>255:
+                    G[x][y] = 255
+                elif G[x][y]+a <1:
+                    G[x][y] = 1
+                else:
+                    G[x][y] = G[x][y] +a 
+        
+        for x in range(R.shape[0]):
+            for y in range(R.shape[1]):
+                if R[x][y]+a>255:
+                    R[x][y] = 255
+                elif R[x][y]+a <1:
+                    R[x][y] = 1
+                else:
+                    R[x][y] = R[x][y] +a 
+    #saving image
+    my_img = cv2.merge((R, G, B))
+    my_img = Image.fromarray(my_img)
+    return my_img
+
 '''
     for i in range(600000):
         rd1 = rd.randint(0, img.shape[1]-2)
@@ -34,7 +63,3 @@ def negativeImage(im, neg, cls, a):
         B[rdy1][rd1], G[rdy1][rd1], R[rdy1][rd1] = B[rdy2][rd2], G[rdy2][rd2], R[rdy2][rd2]
         B[rdy2][rd1], G[rdy2][rd1], R[rdy2][rd1] = tmp1, tmp2, tmp3
 '''
-    #saving image
-    my_img = cv2.merge((R, G, B))
-    my_img = Image.fromarray(my_img)
-    return my_img

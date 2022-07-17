@@ -68,7 +68,7 @@ class Gui:
         self.combobox3.current(0)
 
         self.browse_button = Button(master, text="Browse...", command=lambda: self.update("browse"))
-        self.generate_button = Button(master, text="Resize", command=lambda: self.update("generate"))
+        self.generate_button = Button(master, text="Generate", command=lambda: self.update("generate"))
         self.reset_button = Button(master, text="Reset Window", command=lambda: self.update("reset"))
         
         self.equal = Button(master, text="Histogram Equalization", command=lambda: self.update("equal"))

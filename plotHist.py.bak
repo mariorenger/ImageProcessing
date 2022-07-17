@@ -45,8 +45,15 @@ def plot(image, new, cls):
     else:
         ax[0][0].imshow(image)
     ax[0][1].imshow(new)
+    
     #plt.tight_layout()
     plt.show()
+    img2 = np.array([])
+    if cls == "HSV":
+        new = cv2.cvtColor(new, cv2.COLOR_HSV2RGB)
+    elif cls == "YCbCr":
+        new = cv2.cvtColor(new, cv2.COLOR_YCrCb2RGB)
+    cv2.imwrite('After Equal.png', new)
     
 def plot_matching(image, reference, matched):
     fig, axes = plt.subplots(nrows=4, ncols=3, figsize=(8, 8), sharex=False, sharey=False)
@@ -77,12 +84,25 @@ def cdf(img):
     return cdf_img
 
 
-def equal(img):
-    colorf = np.zeros(img.shape)
-    colorf[:,:,0] = histeq(img[:,:,0])
-    colorf[:,:,1] = histeq(img[:,:,1])
-    colorf[:,:,2] = histeq(img[:,:,2])
-    colorf = colorf.astype(int)
+def equal(img, cls):
+    if cls == "HSV":
+        colorf = np.zeros(img.shape)
+        colorf[:,:,0] = histeq(img[:,:,0])
+        colorf[:,:,1] = histeq(img[:,:,1])
+        colorf[:,:,2] = img[:,:,2]
+        colorf = colorf.astype(int)
+    elif cls == "YCbCr":
+        colorf = np.zeros(img.shape)
+        colorf[:,:,0] = img[:,:,0]
+        colorf[:,:,1] = histeq(img[:,:,1])
+        colorf[:,:,2] = histeq(img[:,:,2])
+        colorf = colorf.astype(int)
+    else:
+        colorf = np.zeros(img.shape)
+        colorf[:,:,0] = histeq(img[:,:,0])
+        colorf[:,:,1] = histeq(img[:,:,1])
+        colorf[:,:,2] = histeq(img[:,:,2])
+        colorf = colorf.astype(int)
 
     cv2.imwrite('new_img_color.png',colorf)
     return colorf
