@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-def plot(image, new):
+def plot(image, new, cls):
     """
     chans = cv2.split(image)
     colors = ("b", "g", "r")
@@ -40,8 +40,10 @@ def plot(image, new):
         
     
     ax[1][1].set_title('new')
-    
-    ax[0][0].imshow(image)
+    if cls == "HSV":
+        ax[0][0].imshow(image[:,:,0], cmap = 'hsv')
+    else:
+        ax[0][0].imshow(image)
     ax[0][1].imshow(new)
     #plt.tight_layout()
     plt.show()
@@ -166,8 +168,6 @@ def histogram_matching(img, target, L=256):
                 min_diff = new_diff
                 map_to = j
         transform.append(map_to)
-    plt.plot(transform, label="calculated transform")
-
     # generate the output
     out = np.zeros(img.shape)
     for i in range(L):

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-def plot(image, new):
+def plot(image, new, cls):
     """
     chans = cv2.split(image)
     colors = ("b", "g", "r")
@@ -40,8 +40,10 @@ def plot(image, new):
         
     
     ax[1][1].set_title('new')
-    
-    ax[0][0].imshow(image)
+    if cls == "HSV":
+        ax[0][0].imshow(image[:,:,0], cmap = 'hsv')
+    else:
+        ax[0][0].imshow(image)
     ax[0][1].imshow(new)
     #plt.tight_layout()
     plt.show()
@@ -75,12 +77,25 @@ def cdf(img):
     return cdf_img
 
 
-def equal(img):
-    colorf = np.zeros(img.shape)
-    colorf[:,:,0] = histeq(img[:,:,0])
-    colorf[:,:,1] = histeq(img[:,:,1])
-    colorf[:,:,2] = histeq(img[:,:,2])
-    colorf = colorf.astype(int)
+def equal(img, cls):
+    if cls == "HSV":
+        colorf = np.zeros(img.shape)
+        colorf[:,:,0] = histeq(img[:,:,0])
+        colorf[:,:,1] = histeq(img[:,:,1])
+        colorf[:,:,2] = img[:,:,2]
+        colorf = colorf.astype(int)
+    elif cls == "YCbCr":
+        colorf = np.zeros(img.shape)
+        colorf[:,:,0] = img[:,:,0]
+        colorf[:,:,1] = histeq(img[:,:,1])
+        colorf[:,:,2] = histeq(img[:,:,2])
+        colorf = colorf.astype(int)
+    else:
+        colorf = np.zeros(img.shape)
+        colorf[:,:,0] = histeq(img[:,:,0])
+        colorf[:,:,1] = histeq(img[:,:,1])
+        colorf[:,:,2] = histeq(img[:,:,2])
+        colorf = colorf.astype(int)
 
     cv2.imwrite('new_img_color.png',colorf)
     return colorf
